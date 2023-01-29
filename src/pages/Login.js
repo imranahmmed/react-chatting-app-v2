@@ -236,30 +236,34 @@ const Login = () => {
         } else {
             signInWithEmailAndPassword(auth, formData.email, formData.password)
                 .then((userCredential) => {
-                    if (userCredential.user.emailVerified) {
-                        set(ref(db, 'users/' + userCredential.user.uid), {
-                            username: userCredential.user.displayName,
-                            email: userCredential.user.email,
-                            id: userCredential.user.uid,
-                            photoURL: userCredential.user.photoURL
-                        });
+                    dispatch(activeUser(userCredential.user));
+                    localStorage.setItem("userInfo", JSON.stringify(userCredential.user));
+                    navigate("/pokpok/home")
+                    
+                    // if (userCredential.user.emailVerified) {
+                    //     set(ref(db, 'users/' + userCredential.user.uid), {
+                    //         username: userCredential.user.displayName,
+                    //         email: userCredential.user.email,
+                    //         id: userCredential.user.uid,
+                    //         photoURL: userCredential.user.photoURL
+                    //     });
 
-                        dispatch(activeUser(userCredential.user));
-                        localStorage.setItem("userInfo", JSON.stringify(userCredential.user));
-                        navigate("/pokpok/home")
+                    //     dispatch(activeUser(userCredential.user));
+                    //     localStorage.setItem("userInfo", JSON.stringify(userCredential.user));
+                    //     navigate("/pokpok/home")
 
-                    } else {
-                        toast.error('Please Verify your Email First.!', {
-                            position: "top-right",
-                            autoClose: 2000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                            theme: "light",
-                        });
-                    }
+                    // } else {
+                    //     toast.error('Please Verify your Email First.!', {
+                    //         position: "top-right",
+                    //         autoClose: 2000,
+                    //         hideProgressBar: false,
+                    //         closeOnClick: true,
+                    //         pauseOnHover: true,
+                    //         draggable: true,
+                    //         progress: undefined,
+                    //         theme: "light",
+                    //     });
+                    // }
                 })
                 .catch((error) => {
                     const errorCode = error.code;

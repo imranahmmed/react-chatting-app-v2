@@ -134,12 +134,12 @@ const Registration = () => {
                         updateProfile(auth.currentUser, {
                             displayName: formData.fullName
                         }).then(() => {
-                            // set(ref(db, 'users/' + UserCredential.user.uid), {
-                            //     username: UserCredential.user.displayName,
-                            //     email: UserCredential.user.email,
-                            //     id: UserCredential.user.uid,
-                            //     photoURL: UserCredential.user.photoURL
-                            // });
+                            set(ref(db, 'users/' + UserCredential.user.uid), {
+                                username: UserCredential.user.displayName,
+                                email: UserCredential.user.email,
+                                id: UserCredential.user.uid,
+                                photoURL: UserCredential.user.photoURL
+                            });
 
                         }).then(() => {
                             toast.success("Registration complete. Please check your email.", {

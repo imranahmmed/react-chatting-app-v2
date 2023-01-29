@@ -71,6 +71,19 @@ button img{
   letter-spacing: 1px;
   font-family: "Nunito", sans-serif;
 }
+.friendsBtn {
+  background-color: #c9c9c9;
+  color: #222;
+  border-radius: 5px;
+  border: 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  font-family: "Nunito", sans-serif;
+}
 
 .regHeading {
   margin: 0;
@@ -277,7 +290,7 @@ button img{
   margin-top: 8px;
   line-height: 1.3;
   text-transform: uppercase;
-  font-size: 18px;
+  font-size: 14px;
 }
 
 .logOut {
@@ -398,16 +411,10 @@ button img{
 
 
 /*
-soxijymid@mailinator.com
+minen@mailinator.com
+dygo@mailinator.com
+mejuxykes@mailinator.com
+kapubycory@mailinator.com
+towy@mailinator.com
 Pa$$w0rd!
-
-
-kirisap@mailinator.com
-Pa$$w0rd!
-
-pucixu@mailinator.com
-mejuzy@mailinator.com
-namurehuva@mailinator.com
-laru@mailinator.com
-sycused@mailinator.com
 */

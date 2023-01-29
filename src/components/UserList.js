@@ -1,11 +1,12 @@
 import React from 'react'
 import Div from './Div'
 import UserCard from './UserCard'
-import { getDatabase, ref, set, push } from "firebase/database";
-
-const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, peoplesData, activeUser, friendReqData, pendingReq }) => {
+import { getDatabase, ref, set, push, remove } from "firebase/database";
+import { toast } from 'react-toastify';
+const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, peoplesData, activeUser, friendReqData, pendingReq, friendListData, friends }) => {
 
     const db = getDatabase();
+
     let handleFriendReq = (info) => {
         set(push(ref(db, 'friendRequests/')), {
             senderName: activeUser.authData.userInfo.displayName,
@@ -23,6 +24,35 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
         console.log(activeUser.authData.userInfo)
     }
 
+    let handleFriendReqReject = (info) => {
+        remove(ref(db, 'friendRequests/' + info.id)).then(() => {
+            toast.error(`${info.senderName}'s Friend Request Rejected!`, {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        });
+        console.log(info)
+    }
+
+    let handleFriendReqAccept = (info) => {
+        set(push(ref(db, 'friends/')), {
+            ...info,
+            date: `${new Date().getDate()}/${new Date().getMonth() + 1}/${new Date().getFullYear()}`
+        }).then(() => {
+            remove(ref(db, 'friendRequests/' + info.id)).then(() => {
+                toast.success(`You Accepted ${info.senderName}'s Friend Request.`)
+            })
+        })
+
+        console.log(info)
+    }
+
 
     return (
         <Div className='box'>
@@ -33,13 +63,18 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
             <div className="boxBody">
                 {peoplesData &&
                     peoplesData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} pendingReq={pendingReq} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} friends={friends} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} />
                     ))
                 }
 
                 {friendReqData &&
                     friendReqData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} pendingReq={pendingReq} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} friends={friends} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} />
+                    ))
+                }
+                {friendListData &&
+                    friendListData.map((item, index) => (
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} friends={friends} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} />
                     ))
                 }
             </div>
@@ -66,6 +101,7 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
                                     ?
                                     <h3>No blocked User Available</h3>
                                     :
+                                    friendListData && friendListData <= 0 &&
                                     <h3>No Friend Available</h3>
                             :
                             friendReqData && friendReqData <= 0 &&

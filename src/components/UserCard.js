@@ -2,9 +2,12 @@ import React from 'react';
 import Div from './Div';
 import Img from './Img';
 
-const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, friendReqData, pendingReq, activeUser }) => {
+const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, friendReqData, friendsData, pendingReq, friends, activeUser, handleFriendReqReject, handleFriendReqAccept }) => {
     let { username, photoURL, email, id } = userData;
-    let { senderName, senderId, senderEmail, senderPhotoURL } = friendReqData;
+    let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
+    let { date } = friendsData;
+    let loggedInUser = (activeUser.authData.userInfo.uid);
+
     return (
         <>
             {friendReqData ?
@@ -41,8 +44,22 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                             <h3>Blocked User Image</h3>
                                         </Div>
                                         :
-                                        <Div className="userName">
-                                            <h3>UnBlocked User Image</h3>
+                                        <Div className="userImg">
+                                            {loggedInUser === senderId
+                                                ?
+                                                receiverPhotoURL
+                                                    ?
+                                                    <Img src={receiverPhotoURL} />
+                                                    :
+                                                    <Img src="../assets/images/08.png" />
+                                                :
+                                                senderPhotoURL
+                                                    ?
+                                                    <Img src={senderPhotoURL} />
+                                                    :
+                                                    <Img src="../assets/images/08.png" />
+                                            }
+
                                         </Div>
                                 :
                                 <Div className="userImg">
@@ -74,6 +91,7 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                 ?
                                 peopleFlag
                                     ?
+                                    // Peoples
                                     <Div className="userName">
                                         <h3>{username}</h3>
                                         <span>{email}</span>
@@ -81,16 +99,26 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                     :
                                     blockedFlag
                                         ?
+                                        // blocked users
                                         <Div className="userName">
                                             <h3>Blocked User Name</h3>
                                             <span>Blocked User Name</span>
                                         </Div>
                                         :
-                                        <Div className="userName">
-                                            <h3>UnBlocked User Name</h3>
-                                            <span>UnBlocked User Name</span>
-                                        </Div>
+                                        // friends
+                                        loggedInUser === senderId
+                                            ?
+                                            <Div className="userName">
+                                                <h3>{receiverName}</h3>
+                                                <span>Friends From <b>{date}</b></span>
+                                            </Div>
+                                            :
+                                            <Div className="userName">
+                                                <h3>{senderName}</h3>
+                                                <span>Friends From <b>{date}</b></span>
+                                            </Div>
                                 :
+                                // friend Request
                                 <Div className="userName">
                                     <h3>{senderName}</h3>
                                     <span>{senderEmail}</span>
@@ -116,11 +144,16 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                         <>
                                             {peopleFlag
                                                 ?
-                                                pendingReq.includes(id + activeUser.authData.userInfo.uid) || pendingReq.includes(activeUser.authData.userInfo.uid + id)
+                                                pendingReq.includes(id + loggedInUser) || pendingReq.includes(loggedInUser + id)
                                                     ?
                                                     <button className='btn'>Pending</button>
                                                     :
-                                                    <button onClick={() => handleFriendReq(userData)} className='btn'>+</button>
+                                                    friends.includes(id + loggedInUser) || friends.includes(loggedInUser + id)
+                                                        ?
+                                                        <button className='friendsBtn'>Friends</button>
+                                                        :
+                                                        <button onClick={() => handleFriendReq(userData)} className='btn'>+</button>
+
                                                 :
                                                 <>
                                                     {blockedFlag
@@ -134,8 +167,8 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                         </>
                                         :
                                         <>
-                                            <button className='btn'>Accept</button>
-                                            <button className='btn'>Reject</button>
+                                            <button onClick={() => handleFriendReqAccept(friendReqData)} className='btn'>Accept</button>
+                                            <button onClick={() => handleFriendReqReject(friendReqData)} className='btn'>Reject</button>
                                         </>
                                     }
                                 </>
