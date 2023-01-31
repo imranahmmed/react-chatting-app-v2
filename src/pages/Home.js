@@ -13,7 +13,8 @@ const Home = () => {
     let [pendingReq, setPendingReq] = useState([])
     let [friendList, setFriendList] = useState([])
     let [friends, setFriends] = useState([])
-
+    let [cancleFriendReq, setCancleFriendReq] = useState([])
+    let [blockedList, setBlockedList] = useState([])
     useEffect(() => {
         const peoples = ref(db, 'users/');
         onValue(peoples, (snapshot) => {
@@ -25,7 +26,9 @@ const Home = () => {
             })
             setPeoples(usersArr);
         });
+    }, [])
 
+    useEffect(() => {
         const friendRequests = ref(db, 'friendRequests/');
         onValue(friendRequests, (snapshot) => {
             let freqArr = [];
@@ -42,13 +45,15 @@ const Home = () => {
         const friendRequests = ref(db, 'friendRequests/');
         onValue(friendRequests, (snapshot) => {
             let prendingArr = [];
+            let cancleArr = [];
             snapshot.forEach((item) => {
                 prendingArr.push(item.val().receiverId + item.val().senderId)
+                cancleArr.push({ ...item.val(), id: item.key })
             })
             setPendingReq(prendingArr);
+            setCancleFriendReq(cancleArr)
         });
     }, [])
-
 
     useEffect(() => {
         const friendList = ref(db, 'friends');
@@ -56,7 +61,7 @@ const Home = () => {
             let friendsArr = [];
             snapshot.forEach((item) => {
                 if (data.authData.userInfo.uid === item.val().receiverId || data.authData.userInfo.uid === item.val().senderId) {
-                    friendsArr.push(item.val())
+                    friendsArr.push({ ...item.val(), id: item.key })
                 }
             });
             setFriendList(friendsArr)
@@ -74,6 +79,19 @@ const Home = () => {
         });
     }, [])
 
+    useEffect(() => {
+        const blockedlist = ref(db, 'blockedList/');
+        onValue(blockedlist, (snapshot) => {
+            let blockedsArr = [];
+            snapshot.forEach((item) => {
+                if (data.authData.userInfo.uid === item.val().blockedById) {
+                    blockedsArr.push({ ...item.val(), id: item.key })
+                }
+            })
+            setBlockedList(blockedsArr);
+        });
+    }, [])
+
     return (
         <>
             <Grid className='py-10' item xs={4}>
@@ -85,8 +103,8 @@ const Home = () => {
                 <UserList activeUser={data} title="My Groups" groupsFlag={true} friendsFlag={false} myGroups={true} />
             </Grid>
             <Grid item xs={4}>
-                <UserList peoplesData={peoples} activeUser={data} pendingReq={pendingReq} friends={friends} title="Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={true} />
-                <UserList activeUser={data} title="Blocked Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={false} blockedFlag={true} />
+                <UserList peoplesData={peoples} activeUser={data} pendingReq={pendingReq} cancleFriendReq={cancleFriendReq} friends={friends} title="Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={true} />
+                <UserList blockedUsersData={blockedList} activeUser={data} title="Blocked Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={false} blockedFlag={true} />
                 <h1>Home</h1>
             </Grid>
         </>

@@ -181,7 +181,7 @@ const Registration = () => {
 
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} columnSpacing={{ xs: 0 }}>
             <Grid item xs={6}>
                 <Div className="registrationLeftSide">
                     <Div>
