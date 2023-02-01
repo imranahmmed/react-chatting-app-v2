@@ -15,6 +15,8 @@ const Home = () => {
     let [friends, setFriends] = useState([])
     let [cancleFriendReq, setCancleFriendReq] = useState([])
     let [blockedList, setBlockedList] = useState([])
+    let [userListShowblocked, setUserListShowblocked] = useState([])
+
     useEffect(() => {
         const peoples = ref(db, 'users/');
         onValue(peoples, (snapshot) => {
@@ -26,7 +28,7 @@ const Home = () => {
             })
             setPeoples(usersArr);
         });
-    }, [])
+    }, [db])
 
     useEffect(() => {
         const friendRequests = ref(db, 'friendRequests/');
@@ -39,7 +41,7 @@ const Home = () => {
             })
             setFriendReq(freqArr);
         });
-    }, [])
+    }, [db])
 
     useEffect(() => {
         const friendRequests = ref(db, 'friendRequests/');
@@ -53,7 +55,20 @@ const Home = () => {
             setPendingReq(prendingArr);
             setCancleFriendReq(cancleArr)
         });
-    }, [])
+    }, [db])
+
+
+    useEffect(() => {
+        const friendRequests = ref(db, 'blockedList/');
+        onValue(friendRequests, (snapshot) => {
+            let blockedArr = []
+            snapshot.forEach((item) => {
+                blockedArr.push(item.val().blockedUserId + item.val().blockedById)
+            })
+            setUserListShowblocked(blockedArr)
+        });
+    }, [db])
+
 
     useEffect(() => {
         const friendList = ref(db, 'friends');
@@ -66,7 +81,7 @@ const Home = () => {
             });
             setFriendList(friendsArr)
         })
-    }, [])
+    }, [db])
 
     useEffect(() => {
         const friends = ref(db, 'friends/');
@@ -77,7 +92,7 @@ const Home = () => {
             })
             setFriends(friendsArr);
         });
-    }, [])
+    }, [db])
 
     useEffect(() => {
         const blockedlist = ref(db, 'blockedList/');
@@ -90,7 +105,7 @@ const Home = () => {
             })
             setBlockedList(blockedsArr);
         });
-    }, [])
+    }, [db])
 
     return (
         <>
@@ -103,7 +118,7 @@ const Home = () => {
                 <UserList activeUser={data} title="My Groups" groupsFlag={true} friendsFlag={false} myGroups={true} />
             </Grid>
             <Grid item xs={4}>
-                <UserList peoplesData={peoples} activeUser={data} pendingReq={pendingReq} cancleFriendReq={cancleFriendReq} friends={friends} title="Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={true} />
+                <UserList peoplesData={peoples} activeUser={data} pendingReq={pendingReq} userListShowblocked={userListShowblocked} cancleFriendReq={cancleFriendReq} friends={friends} title="Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={true} />
                 <UserList blockedUsersData={blockedList} activeUser={data} title="Blocked Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={false} blockedFlag={true} />
                 <h1>Home</h1>
             </Grid>

@@ -7,8 +7,11 @@ body {
   overflow: hidden;
   background-color: #1e212a;
   color: #fff;
+  box-sizing: border-box;
 }
-
+div{
+  box-sizing: border-box;
+}
 a {
   color: #ea6c00;
   font-weight: 500;

@@ -2,11 +2,11 @@ import React from 'react';
 import Div from './Div';
 import Img from './Img';
 
-const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept }) => {
+const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked }) => {
+    let loggedInUser = activeUser.authData.userInfo.uid;
     let { username, photoURL, email, id } = userData;
     let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
     let { date } = friendsData;
-    let loggedInUser = activeUser.authData.userInfo.uid;
     // let { blockedUserName, blockedUserImg } = blockedData;
     // console.log(blockedData.blockedUserName)
 
@@ -165,15 +165,22 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                                     ?
                                                     <button className='friendsBtn'>Friends</button>
                                                     :
+                                                    userListShowblocked.includes(id + loggedInUser) || userListShowblocked.includes(loggedInUser + id)
+                                                    ?
+                                                    <button className='btn'>Blocked</button>
+                                                    : 
                                                     <button onClick={() => handleFriendReq(userData)} className='btn'>+</button>
 
                                             :
                                             <>
                                                 {blockedFlag
                                                     ?
-                                                    <button onClick={()=>handleUnblockFriend(blockedData)} className='btn'>Unblock</button>
+                                                    <button onClick={() => handleUnblockFriend(blockedData)} className='btn'>Unblock</button>
                                                     :
-                                                    <button onClick={() => handleBlockFriend(friendsData)} className='btn'>Block</button>
+                                                    <>
+                                                        <button onClick={() => handleUnfriend(blockedData)} className='btn'>Unfriend</button>
+                                                        <button onClick={() => handleBlockFriend(friendsData)} className='btn'>Block</button>
+                                                    </>
                                                 }
                                             </>
                                         }
