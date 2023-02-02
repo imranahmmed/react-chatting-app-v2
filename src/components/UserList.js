@@ -7,17 +7,54 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
     // console.log(blockedUsersData)
     const db = getDatabase();
     let handleFriendReq = (info) => {
-        set(push(ref(db, 'friendRequests/')), {
-            senderName: activeUser.authData.userInfo.displayName,
-            senderEmail: activeUser.authData.userInfo.email,
-            senderPhotoURL: activeUser.authData.userInfo.photoURL,
-            senderId: activeUser.authData.userInfo.uid,
 
-            receiverName: info.username,
-            receiverEmail: info.email,
-            receiverPhotoURL: info.photoURL,
-            receiverId: info.id,
-        });
+        console.log(info.photoURL)
+        console.log(activeUser.authData.userInfo.photoURL)
+        if (info.photoURL && activeUser.authData.userInfo.photoURL) {
+            set(push(ref(db, 'friendRequests/')), {
+                senderName: activeUser.authData.userInfo.displayName,
+                senderEmail: activeUser.authData.userInfo.email,
+                senderPhotoURL: activeUser.authData.userInfo.photoURL,
+                senderId: activeUser.authData.userInfo.uid,
+
+                receiverName: info.username,
+                receiverEmail: info.email,
+                receiverPhotoURL: info.photoURL,
+                receiverId: info.id,
+            });
+        } else if (info.photoURL) {
+            set(push(ref(db, 'friendRequests/')), {
+                senderName: activeUser.authData.userInfo.displayName,
+                senderEmail: activeUser.authData.userInfo.email,
+                senderId: activeUser.authData.userInfo.uid,
+
+                receiverName: info.username,
+                receiverEmail: info.email,
+                receiverPhotoURL: info.photoURL,
+                receiverId: info.id,
+            });
+        } else if (activeUser.authData.userInfo.photoURL) {
+            set(push(ref(db, 'friendRequests/')), {
+                senderName: activeUser.authData.userInfo.displayName,
+                senderEmail: activeUser.authData.userInfo.email,
+                senderId: activeUser.authData.userInfo.uid,
+                senderPhotoURL: activeUser.authData.userInfo.photoURL,
+
+                receiverName: info.username,
+                receiverEmail: info.email,
+                receiverId: info.id,
+            });
+        } else {
+            set(push(ref(db, 'friendRequests/')), {
+                senderName: activeUser.authData.userInfo.displayName,
+                senderEmail: activeUser.authData.userInfo.email,
+                senderId: activeUser.authData.userInfo.uid,
+
+                receiverName: info.username,
+                receiverEmail: info.email,
+                receiverId: info.id,
+            });
+        }
     };
 
     let handleFriendReqCancle = (info) => {

@@ -134,6 +134,8 @@ const Registration = () => {
                         updateProfile(auth.currentUser, {
                             displayName: formData.fullName
                         }).then(() => {
+                            console.log(UserCredential)
+
                             set(ref(db, 'users/' + UserCredential.user.uid), {
                                 username: UserCredential.user.displayName,
                                 email: UserCredential.user.email,
