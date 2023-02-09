@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react';
 import Div from './Div'
 import UserCard from './UserCard'
+import GroupCreate from './GroupCreate';
 import { getDatabase, ref, set, push, remove } from "firebase/database";
 import { toast } from 'react-toastify';
 const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, peoplesData, cancleFriendReq, activeUser, friendReqData, pendingReq, friendListData, friends, blockedUsersData, userListShowblocked }) => {
@@ -168,11 +169,23 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
         })
     }
 
+    let uid = activeUser;
+
+    let [modalOpen, setModalOpen] = useState(false);
+
+    let handleModalClose = () => {
+        setModalOpen(false);
+    }
+
+    let handleModalOpen = () => {
+        setModalOpen(true);
+    };
+
     return (
         <Div className='box'>
             <div className="boxHeading">
                 <h3>{title}</h3>
-                {groupsFlag && <button className='btn'>Create</button>}
+                {groupsFlag && <button className='btn' onClick={handleModalOpen}>Create</button>}
             </div>
             <div className="boxBody">
                 {peoplesData &&
@@ -198,6 +211,7 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
                 }
             </div>
 
+            <GroupCreate modalOpen={modalOpen} modalClose={handleModalClose} uid={uid} />
 
             <>
                 {

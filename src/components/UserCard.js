@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Div from './Div';
 import Img from './Img';
 
@@ -7,8 +7,6 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
     let { username, photoURL, email, id } = userData;
     let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
     let { date } = friendsData;
-    // let { blockedUserName, blockedUserImg } = blockedData;
-    // console.log(blockedData.blockedUserName)
 
     return (
         <>
@@ -166,11 +164,10 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                                     <button className='friendsBtn'>Friends</button>
                                                     :
                                                     userListShowblocked.includes(id + loggedInUser) || userListShowblocked.includes(loggedInUser + id)
-                                                    ?
-                                                    <button className='btn'>Blocked</button>
-                                                    : 
-                                                    <button onClick={() => handleFriendReq(userData)} className='btn'>+</button>
-
+                                                        ?
+                                                        <button className='btn'>Blocked</button>
+                                                        :
+                                                        <button onClick={() => handleFriendReq(userData)} className='btn'>+</button>
                                             :
                                             <>
                                                 {blockedFlag
@@ -195,7 +192,7 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                         </Div>
                     }
                 </Div>
-            </Div >
+            </Div>
         </>
     )
 }

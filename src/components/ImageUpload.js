@@ -3,7 +3,6 @@ import Div from './Div';
 import Img from './Img';
 import { ThreeDots } from 'react-loader-spinner';
 
-
 // React Cropper
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
