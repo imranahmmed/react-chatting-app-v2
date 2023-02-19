@@ -7,15 +7,19 @@ import { useSelector } from 'react-redux';
 
 const Home = () => {
     const db = getDatabase();
-    let data = useSelector((state) => state);
-    let [peoples, setPeoples] = useState([])
-    let [friendReq, setFriendReq] = useState([])
-    let [pendingReq, setPendingReq] = useState([])
-    let [friendList, setFriendList] = useState([])
-    let [friends, setFriends] = useState([])
-    let [cancleFriendReq, setCancleFriendReq] = useState([])
-    let [blockedList, setBlockedList] = useState([])
-    let [userListShowblocked, setUserListShowblocked] = useState([])
+    const data = useSelector((state) => state);
+    const loggedInUser = data.authData.userInfo.uid;
+
+    let [peoples, setPeoples] = useState([]);
+    let [friendReq, setFriendReq] = useState([]);
+    let [pendingReq, setPendingReq] = useState([]);
+    let [friendList, setFriendList] = useState([]);
+    let [friends, setFriends] = useState([]);
+    let [cancleFriendReq, setCancleFriendReq] = useState([]);
+    let [blockedList, setBlockedList] = useState([]);
+    let [userListShowblocked, setUserListShowblocked] = useState([]);
+    let [groupList, setGroupList] = useState([]);
+    let [myGroupList, setMyGroupList] = useState([]);
 
     useEffect(() => {
         const peoples = ref(db, 'users/');
@@ -28,7 +32,7 @@ const Home = () => {
             })
             setPeoples(usersArr);
         });
-    }, [db])
+    }, [db]);
 
     useEffect(() => {
         const friendRequests = ref(db, 'friendRequests/');
@@ -41,7 +45,7 @@ const Home = () => {
             })
             setFriendReq(freqArr);
         });
-    }, [db])
+    }, [db]);
 
     useEffect(() => {
         const friendRequests = ref(db, 'friendRequests/');
@@ -55,8 +59,7 @@ const Home = () => {
             setPendingReq(prendingArr);
             setCancleFriendReq(cancleArr)
         });
-    }, [db])
-
+    }, [db]);
 
     useEffect(() => {
         const friendRequests = ref(db, 'blockedList/');
@@ -67,8 +70,7 @@ const Home = () => {
             })
             setUserListShowblocked(blockedArr)
         });
-    }, [db])
-
+    }, [db]);
 
     useEffect(() => {
         const friendList = ref(db, 'friends');
@@ -81,7 +83,7 @@ const Home = () => {
             });
             setFriendList(friendsArr)
         })
-    }, [db])
+    }, [db]);
 
     useEffect(() => {
         const friends = ref(db, 'friends/');
@@ -92,7 +94,7 @@ const Home = () => {
             })
             setFriends(friendsArr);
         });
-    }, [db])
+    }, [db]);
 
     useEffect(() => {
         const blockedlist = ref(db, 'blockedList/');
@@ -105,17 +107,41 @@ const Home = () => {
             })
             setBlockedList(blockedsArr);
         });
-    }, [db])
+    }, [db]);
+
+    useEffect(() => {
+        const groups = ref(db, 'groups');
+        onValue(groups, (snapshot) => {
+            let groupssArr = [];
+            snapshot.forEach((item) => {
+                groupssArr.push({ ...item.val(), groupId: item.key })
+            });
+            setGroupList(groupssArr);
+        });
+    }, [db]);
+
+    useEffect(() => {
+        const myGroups = ref(db, 'groups');
+        onValue(myGroups, (snapshot) => {
+            let myGroupssArr = [];
+            snapshot.forEach((item) => {
+                if (loggedInUser === item.val().adminId) {
+                    myGroupssArr.push({ ...item.val(), groupId: item.key })
+                }
+            });
+            setMyGroupList(myGroupssArr);
+        });
+    }, [db]);
 
     return (
         <>
             <Grid className='py-10' item xs={4}>
-                <UserList activeUser={data} pendingReq={pendingReq} title="Groups List" groupsFlag={true} />
+                <UserList activeUser={data} pendingReq={pendingReq} groupList={groupList} title="Groups List" groupsFlag={true} />
                 <UserList friendReqData={friendReq} activeUser={data} title="Friend  Request" groupsFlag={false} />
             </Grid>
             <Grid item xs={3}>
                 <UserList friendListData={friendList} activeUser={data} pendingReq={pendingReq} title="Friends" groupsFlag={false} friendsFlag={true} myGroups={false} />
-                <UserList activeUser={data} title="My Groups" groupsFlag={true} friendsFlag={false} myGroups={true} />
+                <UserList myGroupList={myGroupList} activeUser={data} title="My Groups" groupsFlag={true} myGroupsFlag={true} friendsFlag={false} myGroups={true} />
             </Grid>
             <Grid item xs={4}>
                 <UserList peoplesData={peoples} activeUser={data} pendingReq={pendingReq} userListShowblocked={userListShowblocked} cancleFriendReq={cancleFriendReq} friends={friends} title="Peoples" groupsFlag={false} friendsFlag={true} myGroups={false} peopleFlag={true} />

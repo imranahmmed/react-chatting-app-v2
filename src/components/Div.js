@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Div = ({children, className}) => {
+const Div = ({ children, className, onClick }) => {
   return (
-    <div className={className}>{children}</div>
+    <div className={className} onClick={onClick}>{children}</div>
   )
 }
 

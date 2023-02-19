@@ -37,8 +37,8 @@ label {
   color: #03014c;
   font-family: "Nunito", sans-serif;
 }
-fieldset legend{
-  color: #03014c!important;
+fieldset legend {
+  color: #03014c !important;
 }
 .w-full {
   width: 100%;
@@ -386,7 +386,23 @@ fieldset legend{
   -moz-box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
   box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
 }
+.box::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
+.box::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+.box::-webkit-scrollbar-thumb {
+  background-color: #ea6c00;
+  border-radius: 3px;
+}
+
+.box::-webkit-scrollbar-thumb:hover {
+  background-color: #ea6c00;
+}
 .box:last-child {
   margin-bottom: 0;
 }
@@ -423,6 +439,165 @@ fieldset legend{
   width: 70px;
   border-radius: 50%;
   overflow: hidden;
+}
+.img-preview {
+  overflow: hidden;
+}
+
+.imagePreviewBox {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: auto;
+  border: 1px solid #222;
+}
+
+.chatBox {
+  height: calc(100vh - 30px);
+  width: calc(100% - 15px);
+  background-color: #43495c47;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px 0px rgb(0 0 0 / 20%);
+  overflow: hidden;
+  padding: 15px;
+  margin-top: 15px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  margin-bottom: 1vh;
+  color: white;
+  -webkit-box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
+  box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
+  position: relative;
+}
+
+.chatBox .boxHeading {
+  border-bottom: 1px solid #bad1ff42;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.chatInfo {
+  display: flex;
+  gap: 10px;
+}
+.chatName {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.chatName h3 {
+  font-size: 22px;
+  margin-bottom: 0;
+  line-height: 1;
+}
+.chatName span {
+  line-height: 1;
+  font-size: 12px;
+}
+
+.chatFooter {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  border-top: 1px solid #595d8e;
+  padding: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.chatBody {
+  height: calc(100% - 155px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chatBody::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.chatBody::-webkit-scrollbar-track {
+  background-color: #fff;
+}
+
+.chatBody::-webkit-scrollbar-thumb {
+  background-color: #ea6c00;
+  border-radius: 0px;
+}
+
+.chatBody::-webkit-scrollbar-thumb:hover {
+  background-color: #ea6c00;
+}
+
+.sendButton {
+  font-size: 24px;
+}
+
+.senderMsg {
+  width: 100%;
+  text-align: left;
+  position: relative;
+  margin-bottom: 7px;
+}
+
+.senderMsg:after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: -15px;
+  height: 30px;
+  width: 30px;
+  background-color: #f1f1f1;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  max-width: 50%;
+}
+
+.receverMsg {
+  max-width: 100%;
+  text-align: right;
+  margin-bottom: 7px;
+  position: relative;
+}
+.receverMsg::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  background-color: #5f35f5;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+.senderMsg .msg {
+  background-color: #f1f1f1;
+  color: #595d8e;
+  padding: 5px 10px 5px 15px;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+}
+.receverMsg .msg {
+  background-color: #5f35f5;
+  padding: 5px 15px 5px 10px;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+  max-width: 50%;
+}
+.msg p {
+  margin: 0;
+}
+.receverMsgBox {
+  text-align: right;
+}
+.receverMsgBox span,
+.senderMsgBox span {
+  font-size: 12px;
+  color: #bad1ff75;
+  font-weight: 100;
 }
 
 /*

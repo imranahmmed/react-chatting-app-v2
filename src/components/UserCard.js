@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import Div from './Div';
 import Img from './Img';
-
-const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked }) => {
+const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked, groupData, myGroupData }) => {
     let loggedInUser = activeUser.authData.userInfo.uid;
     let { username, photoURL, email, id } = userData;
     let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
     let { date } = friendsData;
+    let { groupName, groupTag, groupPhoto, adminId } = groupData;
 
     return (
         <>
@@ -16,12 +16,22 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                         ?
                         myGroups
                             ?
-                            <Div className="userName">
-                                <h3>My Group Image</h3>
+                            <Div className="userImg">
+                                {groupPhoto
+                                    ?
+                                    <Img src={groupPhoto} />
+                                    :
+                                    <Img src="../assets/images/08.png" />
+                                }
                             </Div>
                             :
-                            <Div className="userName">
-                                <h3>Join Group Image</h3>
+                            <Div className="userImg">
+                                {groupPhoto
+                                    ?
+                                    <Img src={groupPhoto} />
+                                    :
+                                    <Img src="../assets/images/08.png" />
+                                }
                             </Div>
                         :
                         friendsFlag
@@ -81,14 +91,14 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                         myGroups
                             ?
                             <Div className="userName">
-                                <h3>Group Name</h3>
-                                <span>Last Chat</span>
+                                <h3>{groupName}</h3>
+                                <span>{groupTag}</span>
                             </Div>
                             :
 
                             <Div className="userName">
-                                <h3>Join Group</h3>
-                                <span>Join Group</span>
+                                <h3>{groupName}</h3>
+                                <span>{groupTag}</span>
                             </Div>
                         :
                         friendsFlag
@@ -129,6 +139,7 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                             </Div>
                     }
                 </Div>
+
                 <Div className="userActions">
                     {groupsFlag
                         ?
@@ -137,6 +148,7 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                 ?
                                 <span>Today, 8:56pm</span>
                                 :
+                                loggedInUser !== adminId &&
                                 <button className='btn'>Join</button>
                             }
                         </>

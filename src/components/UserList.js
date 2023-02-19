@@ -4,13 +4,9 @@ import UserCard from './UserCard'
 import GroupCreate from './GroupCreate';
 import { getDatabase, ref, set, push, remove } from "firebase/database";
 import { toast } from 'react-toastify';
-const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, peoplesData, cancleFriendReq, activeUser, friendReqData, pendingReq, friendListData, friends, blockedUsersData, userListShowblocked }) => {
-    // console.log(blockedUsersData)
+const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, myGroupsFlag, peoplesData, cancleFriendReq, activeUser, friendReqData, pendingReq, friendListData, friends, blockedUsersData, userListShowblocked, groupList, myGroupList }) => {
     const db = getDatabase();
     let handleFriendReq = (info) => {
-
-        console.log(info.photoURL)
-        console.log(activeUser.authData.userInfo.photoURL)
         if (info.photoURL && activeUser.authData.userInfo.photoURL) {
             set(push(ref(db, 'friendRequests/')), {
                 senderName: activeUser.authData.userInfo.displayName,
@@ -183,33 +179,53 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
 
     return (
         <Div className='box'>
-            <div className="boxHeading">
+            <Div className="boxHeading">
                 <h3>{title}</h3>
-                {groupsFlag && <button className='btn' onClick={handleModalOpen}>Create</button>}
-            </div>
-            <div className="boxBody">
+                {groupsFlag ?
+                    myGroupsFlag ?
+                        ""
+                        :
+                        <button className='btn' onClick={handleModalOpen}>Create</button>
+                    :
+                    ""
+                }
+            </Div>
+            <Div className="boxBody">
                 {peoplesData &&
                     peoplesData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} cancleFriendReq={cancleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} cancleFriendReq={cancleFriendReq} />
                     ))
                 }
 
                 {friendReqData &&
                     friendReqData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
                     ))
                 }
                 {friendListData &&
                     friendListData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
                     ))
                 }
                 {blockedUsersData &&
                     blockedUsersData.map((item, index) => (
-                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
                     ))
                 }
-            </div>
+
+                {groupList &&
+                    groupList.map((item, index) => (
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
+                    ))
+                }
+
+                {myGroupList &&
+                    myGroupList.map((item, index) => (
+                        <UserCard key={index} userData={item} friendReqData={item} friendsData={item} pendingReq={pendingReq} userListShowblocked={userListShowblocked} friends={friends} blockedData={item} activeUser={activeUser} groupData={item} myGroupData={item} groupsFlag={groupsFlag} friendsFlag={friendsFlag} myGroups={myGroups} peopleFlag={peopleFlag} blockedFlag={blockedFlag} handleFriendReq={handleFriendReq} handleFriendReqCancle={handleFriendReqCancle} handleFriendReqReject={handleFriendReqReject} handleFriendReqAccept={handleFriendReqAccept} handleBlockFriend={handleBlockFriend} handleUnblockFriend={handleUnblockFriend} handleUnfriend={handleUnfriend} cancleFriendReq={cancleFriendReq} />
+                    ))
+                }
+            </Div>
+
 
             <GroupCreate modalOpen={modalOpen} modalClose={handleModalClose} uid={uid} />
 
@@ -219,8 +235,10 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
                         ?
                         myGroups
                             ?
+                            myGroupList && myGroupList <= 0 &&
                             <h3>No Group Available</h3>
                             :
+                            groupList && groupList <= 0 &&
                             <h3>No Group Created Yet</h3>
                         :
                         friendsFlag

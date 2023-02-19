@@ -216,9 +216,24 @@ const Login = () => {
                     id: result.user.uid,
                     photoURL: result.user.photoURL
                 });
-
-                dispatch(activeUser(result.user));
-                localStorage.setItem("userInfo", JSON.stringify(result.user));
+                // dispatch(activeUser(result.user));
+                // localStorage.setItem("userInfo", JSON.stringify(result.user));
+                dispatch(activeUser({
+                    accessToken: result.user.accessToken,
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    photoURL: result.user.photoURL,
+                    uid: result.user.uid,
+                    phoneNumber: result.user.phoneNumber,
+                }));
+                localStorage.setItem("userInfo", JSON.stringify({
+                    accessToken: result.user.accessToken,
+                    displayName: result.user.displayName,
+                    email: result.user.email,
+                    photoURL: result.user.photoURL,
+                    uid: result.user.uid,
+                    phoneNumber: result.user.phoneNumber,
+                }));
                 navigate("/pokpok/home")
             })
     }
@@ -239,7 +254,7 @@ const Login = () => {
                     dispatch(activeUser(userCredential.user));
                     localStorage.setItem("userInfo", JSON.stringify(userCredential.user));
                     navigate("/pokpok/home")
-                    
+
                     // if (userCredential.user.emailVerified) {
                     //     set(ref(db, 'users/' + userCredential.user.uid), {
                     //         username: userCredential.user.displayName,
