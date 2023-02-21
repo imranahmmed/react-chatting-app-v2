@@ -3,15 +3,22 @@ import Div from './Div'
 import Img from './Img';
 import { useSelector, useDispatch } from 'react-redux';
 import { activeChatUser } from '../slices/activeChatSlice';
+import Badge from '@mui/material/Badge';
+
 const FriendCard = ({ data, activeUser }) => {
     const { receiverId, receiverEmail, receiverName, receiverPhotoURL, senderId, senderEmail, senderName, senderPhotoURL } = data
     const dispatch = useDispatch()
+    const onlineUsersData = useSelector(state => state);
+    const onlineUsers = onlineUsersData.onlineUsersData.onlineChatUserInfo
+
     const openMsgBox = (e) => {
         console.log(e)
     }
 
     return (
         <Div className="user" onClick={() => dispatch(activeChatUser({ ...data, status: "singleMsg" }))}>
+
+
             <Div className="userInfo">
                 <Div className="userImg">
                     {activeUser === senderId ?
@@ -43,7 +50,12 @@ const FriendCard = ({ data, activeUser }) => {
             </Div>
 
             <Div className="userActions">
-                {/* <button className='btn'>Join</button> */}
+                {onlineUsers && onlineUsers.includes(activeUser === senderId ? receiverId : senderId)
+                    ?
+                    <Badge badgeContent={"Online"} color="success" className='mr-40' />
+                    :
+                    <Badge badgeContent={"Offline"} color="secondary" className='mr-40' />
+                }
             </Div>
         </Div>
     )

@@ -53,6 +53,13 @@ fieldset legend {
 .mt-20 {
   margin-top: 20px;
 }
+.mr-20 {
+  margin-right: 20px;
+}
+.mr-40 {
+  margin-right: 40px;
+}
+
 .flex {
   display: flex;
 }
@@ -507,20 +514,23 @@ fieldset legend {
   display: flex;
   gap: 15px;
 }
+.chatBody > div {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  cursor: pointer;
+}
+
+.chatBody > div::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+}
 
 .chatBody {
   height: calc(100% - 155px);
   overflow-y: scroll !important;
   overflow-x: hidden !important;
 }
-.react-scroll-to-bottom--css-obbts-1n7m0yu {
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-}
-.react-scroll-to-bottom--css-lmven-1n7m0yu::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
+
 .chatBody::-webkit-scrollbar {
   width: 0px;
   height: 0px;

@@ -28,6 +28,8 @@ const ChatBox = () => {
     const id = activeChatReceiverId === loggedinUser ? activeChatSenderId : activeChatReceiverId
     const [msg, setMsg] = useState("");
     const [msgList, setMsgList] = useState([]);
+    const onlineUsers = data.onlineUsersData.onlineChatUserInfo
+
 
     moment.updateLocale('en', { // override relative time thresholds for "en-gb"
         relativeTime: {
@@ -67,8 +69,7 @@ const ChatBox = () => {
             setMsgList(arr)
         })
     }, [data])
-    // Set custom thresholds for relative time
-    
+
     return (
         <>
             {data.activeChatData.activeChatUserInfo
@@ -93,12 +94,18 @@ const ChatBox = () => {
                                         :
                                         <h3>{activeChatUserInfo.senderName}</h3>
                                     }
-                                    <span>Online</span>
+
+                                    {onlineUsers && onlineUsers.includes(activeChatUserInfo && loggedinUser === activeChatSenderId ? activeChatUserInfo.receiverId : activeChatUserInfo.senderId)
+                                        ?
+                                        <span>Online</span>
+                                        :
+                                        <span>Offline</span>
+                                    }
                                 </Div>
                             </Div>
                             <Div><BsThreeDotsVertical /></Div>
                         </Div>
-                        <ScrollToBottom className="chatBody">
+                        <ScrollToBottom className="chatBody" style={{ marginBottom: "50px" }}>
                             {msgList.length > 0
                                 ?
                                 msgList.map((item, index) => (

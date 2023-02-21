@@ -19,7 +19,7 @@ import { activeUser } from '../slices/authSlice';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, push, ref, set } from "firebase/database";
 
 const submit = styled(Button)({
     fontSize: 14,
@@ -170,7 +170,6 @@ const Login = () => {
     let handleForgotPass = (e) => {
         let { name, value } = e.target
         setForgotPassEmail({ ...forgotPassEmail, [name]: value });
-        console.log(forgotPassEmail)
     }
 
     let handleforgotPass = () => {
@@ -234,6 +233,9 @@ const Login = () => {
                     uid: result.user.uid,
                     phoneNumber: result.user.phoneNumber,
                 }));
+                set(ref(db, 'activeUsers/' + result.user.uid), {
+                    id: result.user.uid,
+                });
                 navigate("/pokpok/home")
             })
     }
@@ -254,6 +256,11 @@ const Login = () => {
                     dispatch(activeUser(userCredential.user));
                     localStorage.setItem("userInfo", JSON.stringify(userCredential.user));
                     navigate("/pokpok/home")
+
+                    set(ref(db, 'activeUsers/' + userCredential.user.uid), {
+                        id: userCredential.user.uid,
+                    });
+
 
                     // if (userCredential.user.emailVerified) {
                     //     set(ref(db, 'users/' + userCredential.user.uid), {

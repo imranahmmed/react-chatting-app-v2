@@ -10,18 +10,19 @@ import { NavLink } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { activeUser } from '../slices/authSlice';
+import { onlineChatUser } from '../slices/OnlineUserSlice'
 import ImageUpload from '../components/ImageUpload'
 
 import { getStorage, ref as ref_storage, getDownloadURL } from "firebase/storage";
 import { getAuth, updateProfile, signOut } from "firebase/auth";
-import { getDatabase, ref as ref_database, update } from "firebase/database";
+import { getDatabase, ref as ref_database, update, remove, onValue } from "firebase/database";
 
 const Sidebar = () => {
     const auth = getAuth();
     const db = getDatabase();
     const navigate = useNavigate();
     const userAuthData = useSelector(state => state)
-    const dispatch = useDispatch(state => state)
+    const dispatch = useDispatch()
     let uid = userAuthData.authData.userInfo.uid;
     let [modalOpen, setModalOpen] = useState(false);
     let [profile, setProfile] = useState("");
@@ -37,11 +38,27 @@ const Sidebar = () => {
         };
     }, []);
 
+    useEffect(() => {
+        const onlineUsersRef = ref_database(db, 'activeUsers/');
+        onValue(onlineUsersRef, (snapshot) => {
+            let arr = []
+            snapshot.forEach((item) => {
+                arr.push(item.val().id)
+            });
+            dispatch(onlineChatUser(arr))
+        });
+    }, [db])
+
+
+
+
     let handleLogOut = () => {
         signOut(auth).then(() => {
             dispatch(activeUser(null))
             localStorage.removeItem("userInfo")
             navigate("/login")
+
+            remove(ref_database(db, 'activeUsers/' + uid),);
         }).catch((error) => {
             // An error happened.
         });
