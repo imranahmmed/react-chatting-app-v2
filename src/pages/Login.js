@@ -19,7 +19,7 @@ import { activeUser } from '../slices/authSlice';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { getDatabase, push, ref, set } from "firebase/database";
+import { getDatabase, ref, set } from "firebase/database";
 
 const submit = styled(Button)({
     fontSize: 14,
@@ -349,7 +349,7 @@ const Login = () => {
 
                             <CButton onClick={handleClick} buttonType={loginSubmitButton}>Sign in</CButton>
 
-                            <AuthConfirmationLink className="loginAuthLink" title="Don’t have an account ?" href="/" hrefTitle="Sign up" />
+                            <AuthConfirmationLink className="loginAuthLink" title="Don’t have an account ?" href="/signup" hrefTitle="Sign up" />
                             <AuthConfirmationLink onClick={handleOpen} className="forgottenPassword" href="#" hrefTitle="Forgotten password?" />
                         </Div>
                     </Div>

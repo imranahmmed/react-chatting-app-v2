@@ -4,11 +4,10 @@ import UserList from '../components/UserList';
 import { getDatabase, ref, onValue } from "firebase/database";
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-
 const Home = () => {
     const db = getDatabase();
     const data = useSelector((state) => state);
-    const loggedInUser = data.authData.userInfo.uid;
+    const loggedInUser = data.authData.userInfo && data.authData.userInfo.uid;
 
     let [peoples, setPeoples] = useState([]);
     let [friendReq, setFriendReq] = useState([]);
@@ -26,7 +25,7 @@ const Home = () => {
         onValue(peoples, (snapshot) => {
             let usersArr = [];
             snapshot.forEach((item) => {
-                if (data.authData.userInfo.uid !== item.key) {
+                if (data.authData.userInfo && data.authData.userInfo.uid !== item.key) {
                     usersArr.push(item.val())
                 }
             })
@@ -39,7 +38,7 @@ const Home = () => {
         onValue(friendRequests, (snapshot) => {
             let freqArr = [];
             snapshot.forEach((item) => {
-                if (item.val().receiverId === data.authData.userInfo.uid) {
+                if (item.val().receiverId === data.authData.userInfo && data.authData.userInfo.uid) {
                     freqArr.push({ ...item.val(), id: item.key })
                 }
             })
@@ -77,7 +76,7 @@ const Home = () => {
         onValue(friendList, (snapshot) => {
             let friendsArr = [];
             snapshot.forEach((item) => {
-                if (data.authData.userInfo.uid === item.val().receiverId || data.authData.userInfo.uid === item.val().senderId) {
+                if (data.authData.userInfo && data.authData.userInfo.uid === item.val().receiverId || data.authData.userInfo && data.authData.userInfo.uid === item.val().senderId) {
                     friendsArr.push({ ...item.val(), id: item.key })
                 }
             });
@@ -101,7 +100,7 @@ const Home = () => {
         onValue(blockedlist, (snapshot) => {
             let blockedsArr = [];
             snapshot.forEach((item) => {
-                if (data.authData.userInfo.uid === item.val().blockedById) {
+                if (data.authData.userInfo && data.authData.userInfo.uid === item.val().blockedById) {
                     blockedsArr.push({ ...item.val(), id: item.key })
                 }
             })
@@ -114,7 +113,9 @@ const Home = () => {
         onValue(groups, (snapshot) => {
             let groupssArr = [];
             snapshot.forEach((item) => {
-                groupssArr.push({ ...item.val(), groupId: item.key })
+                if (item.val().adminId !== loggedInUser) {
+                    groupssArr.push({ ...item.val(), groupId: item.key })
+                }
             });
             setGroupList(groupssArr);
         });

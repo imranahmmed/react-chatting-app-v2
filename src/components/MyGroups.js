@@ -11,6 +11,8 @@ const MyGroups = () => {
     const db = getDatabase();
     const data = useSelector((state) => state);
     const loggedInUser = data.authData.userInfo.uid;
+
+
     let [myGroupList, setMyGroupList] = useState([]);
 
     useEffect(() => {
@@ -25,7 +27,7 @@ const MyGroups = () => {
             setMyGroupList(myGroupssArr);
         });
     }, [db]);
-    
+
     return (
         <UserList myGroupList={myGroupList} activeUser={data} title="My Groups" groupsFlag={true} myGroupsFlag={true} friendsFlag={false} myGroups={true} />
     )

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Div from './Div';
 import Img from './Img';
-const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked, groupData, myGroupData }) => {
+import CustomDropdown from './CustomDropdown';
+
+const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked, groupData, myGroupData, handleGroupJoin, handleGroupReqModalOpen }) => {
     let loggedInUser = activeUser.authData.userInfo.uid;
     let { username, photoURL, email, id } = userData;
     let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
     let { date } = friendsData;
-    let { groupName, groupTag, groupPhoto, adminId } = groupData;
-
+    let { groupName, groupTag, groupPhoto, adminId, groupId } = groupData;
     return (
         <>
             <Div className="user">
@@ -146,10 +147,16 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                         <>
                             {myGroups
                                 ?
-                                <span>Today, 8:56pm</span>
+                                <CustomDropdown>
+                                    <ul>
+                                        <li onClick={()=>handleGroupReqModalOpen(groupId)}>Member Request</li>
+                                        <li>Group Members</li>
+                                    </ul>
+                                </CustomDropdown>
+                                // <BsThreeDotsVertical/>
                                 :
                                 loggedInUser !== adminId &&
-                                <button className='btn'>Join</button>
+                                <button className='btn' onClick={() => handleGroupJoin(groupData)}>Join</button>
                             }
                         </>
                         :

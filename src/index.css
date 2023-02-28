@@ -394,8 +394,8 @@ fieldset legend {
   box-shadow: inset 0px 0px 37px 0px rgba(0, 0, 0, 1);
 }
 .box::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 2px;
+  height: 2px;
 }
 
 .box::-webkit-scrollbar-track {
@@ -511,8 +511,6 @@ fieldset legend {
   width: 100%;
   border-top: 1px solid #595d8e;
   padding: 15px;
-  display: flex;
-  gap: 15px;
 }
 .chatBody > div {
   overflow-y: scroll !important;
@@ -526,7 +524,7 @@ fieldset legend {
 }
 
 .chatBody {
-  height: calc(100% - 155px);
+  height: calc(100% - 280px);
   overflow-y: scroll !important;
   overflow-x: hidden !important;
 }
@@ -595,9 +593,11 @@ fieldset legend {
   display: inline-block;
   border-radius: 3px;
   position: relative;
+  max-width: 50%;
 }
 .receverMsg .msg {
   background-color: #5f35f5;
+  color: #f1f1f1;
   padding: 5px 15px 5px 10px;
   display: inline-block;
   border-radius: 3px;
@@ -633,6 +633,96 @@ fieldset legend {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.senderDeleteMsg {
+  position: relative;
+}
+
+.senderDeleteMsg .deletedMsg {
+  background-color: #b8bacf;
+  color: #595d8e;
+  padding: 5px 10px 5px 15px;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+}
+
+.senderDeleteMsg::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: -15px;
+  height: 30px;
+  width: 30px;
+  background-color: #b8bacf;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.receverDeleteMsg {
+  position: relative;
+}
+
+.receverDeleteMsg .deletedMsg {
+  background-color: #b8bacf;
+  padding: 5px 15px 5px 10px;
+  display: inline-block;
+  border-radius: 3px;
+  position: relative;
+  max-width: 50%;
+}
+
+.receverDeleteMsg::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  right: -15px;
+  height: 30px;
+  width: 30px;
+  background-color: #b8bacf;
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.deletedMsg p {
+  margin: 0;
+}
+
+/* =============================================================================== */
+/* =============================================================================== */
+/* =============================================================================== */
+.dropdown {
+  position: relative;
+}
+.dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dropdown-list {
+  position: absolute;
+  top: 21px;
+  left: -200px;
+  list-style: none;
+  margin: 0;
+  width: 200px;
+  background-color: cadetblue;
+  padding: 0px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.dropdown-list li {
+  padding: 10px 10px;
+  cursor: pointer;
+}
+.dropdown-list li:hover {
+  background-color: #498e91;
+}
+
+.modalBody ul li {
+  color: #11175d;
+  font-weight: 600;
 }
 /*
 minen@mailinator.com

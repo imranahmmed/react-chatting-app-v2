@@ -18,12 +18,18 @@ import { getAuth, updateProfile, signOut } from "firebase/auth";
 import { getDatabase, ref as ref_database, update, remove, onValue } from "firebase/database";
 
 const Sidebar = () => {
+    useEffect(() => {
+        if (!userAuthData.authData.userInfo) {
+            navigate("/")
+        };
+    }, []);
+
     const auth = getAuth();
     const db = getDatabase();
     const navigate = useNavigate();
     const userAuthData = useSelector(state => state)
     const dispatch = useDispatch()
-    let uid = userAuthData.authData.userInfo.uid;
+    let uid = userAuthData.authData.userInfo && userAuthData.authData.userInfo.uid;
     let [modalOpen, setModalOpen] = useState(false);
     let [profile, setProfile] = useState("");
     let photoURL = profile;
@@ -32,11 +38,6 @@ const Sidebar = () => {
         setModalOpen(true);
     };
 
-    useEffect(() => {
-        if (!userAuthData.authData.userInfo) {
-            navigate("/login")
-        };
-    }, []);
 
     useEffect(() => {
         const onlineUsersRef = ref_database(db, 'activeUsers/');
@@ -56,7 +57,7 @@ const Sidebar = () => {
         signOut(auth).then(() => {
             dispatch(activeUser(null))
             localStorage.removeItem("userInfo")
-            navigate("/login")
+            navigate("/")
 
             remove(ref_database(db, 'activeUsers/' + uid),);
         }).catch((error) => {
@@ -90,12 +91,8 @@ const Sidebar = () => {
         setModalOpen(false);
     }
 
-    // console.log(storageRef)
-    // console.log(auth.currentUser);
-    // console.log(userAuthData.authData.userInfo.photoURL);
-
     useEffect(() => {
-        setProfile(userAuthData.authData.userInfo.photoURL)
+        setProfile(userAuthData.authData.userInfo && userAuthData.authData.userInfo.photoURL)
     }, [userAuthData])
 
     return (
@@ -115,7 +112,7 @@ const Sidebar = () => {
                                 <AiOutlineCloudUpload />
                             </div>
                         </div>
-                        <h3>{userAuthData.authData.userInfo.displayName}</h3>
+                        <h3>{userAuthData.authData.userInfo && userAuthData.authData.userInfo.displayName}</h3>
                     </Div>
 
                     <Div className="menus">

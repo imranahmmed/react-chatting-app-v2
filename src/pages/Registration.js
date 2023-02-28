@@ -157,7 +157,7 @@ const Registration = () => {
                             setLoader(false);
 
                             setTimeout(() => {
-                                navigate("/login")
+                                navigate("/")
                             }, 2000)
                         }).catch((error) => {
                             // An error occurred
@@ -246,7 +246,7 @@ const Registration = () => {
 
                             }
 
-                            <AuthConfirmationLink className="regAuthLink" title="Already  have an account ?" href="/login" hrefTitle="Sign in" />
+                            <AuthConfirmationLink className="regAuthLink" title="Already  have an account ?" href="/" hrefTitle="Sign in" />
                         </Div>
                     </Div>
                 </Div>

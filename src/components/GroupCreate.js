@@ -23,10 +23,10 @@ import { getStorage, ref as storageRef, uploadString, getDownloadURL } from "fir
 const GroupCreate = ({ modalOpen, modalClose }) => {
     const db = getDatabase()
     const data = useSelector(state => state);
-    const loggedinUser = data.authData.userInfo.uid;
-    const loggedinUserName = data.authData.userInfo.displayName;
-    const loggedinUserEmail = data.authData.userInfo.email;
-    const loggedinUserPhoto = data.authData.userInfo.photoURL;
+    const loggedinUser = data.authData.userInfo && data.authData.userInfo.uid;
+    const loggedinUserName = data.authData.userInfo && data.authData.userInfo.displayName;
+    const loggedinUserEmail = data.authData.userInfo && data.authData.userInfo.email;
+    const loggedinUserPhoto = data.authData.userInfo && data.authData.userInfo.photoURL;
 
     const [image, setImage] = useState();
     const [cropData, setCropData] = useState("");
