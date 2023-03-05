@@ -21,13 +21,14 @@ import { toast } from 'react-toastify';
 import { getDatabase, set, ref, push, onValue, remove } from 'firebase/database';
 import { v4 as uuidv4 } from 'uuid';
 
-const GroupJoinRequest = ({ handleGroupReqModalClose, groupJoinReqModalOpen, groupJoinReqList }) => {
+const GroupMembers = ({ groupMembersModalOpen, handleGroupMembersModalClose, groupMembersList }) => {
     const db = getDatabase()
     const data = useSelector(state => state);
     const loggedInUser = data.authData.userInfo && data.authData.userInfo.uid;
     const loggedInUserName = data.authData.userInfo && data.authData.userInfo.displayName;
     const loggedInUserEmail = data.authData.userInfo && data.authData.userInfo.email;
     const loggedInUserPhoto = data.authData.userInfo && data.authData.userInfo.photoURL;
+
 
     const styleModalBox = {
         position: 'absolute',
@@ -81,7 +82,6 @@ const GroupJoinRequest = ({ handleGroupReqModalClose, groupJoinReqModalOpen, gro
         },
     });
 
-
     const cancle = styled(Button)({
         fontSize: 14,
         padding: '5px 20px',
@@ -107,65 +107,49 @@ const GroupJoinRequest = ({ handleGroupReqModalClose, groupJoinReqModalOpen, gro
 
 
 
-    const handleAcceptJoinRequest = (userInfo) => {
-        set(push(ref(db, "groupMembers")), {
-            groupName: userInfo.groupName,
-            groupId: userInfo.groupId,
-            userName: userInfo.userName,
-            userId: userInfo.userId,
-            userPhoto: userInfo.userPhoto,
-        }).then(() => {
-            remove(ref(db, "groupJoinRequest/" + userInfo.id));
-            toast.success(`You Accepeted ${userInfo.userName}'s Join Request to ${userInfo.groupName}.`);
-            handleGroupReqModalClose()
-        })
-    }
-    const handleRejectJoinRequest = (userInfo) => {
-        remove(ref(db, "groupJoinRequest/" + userInfo.id))
-    }
-
     return (
-        <Modal open={groupJoinReqModalOpen} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
+        <Modal open={groupMembersModalOpen} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
             <Box sx={styleModalBox}>
                 <Div className="modalHeader">
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Group Join Requests
+                        Group Members
                     </Typography>
                 </Div>
 
                 <Div className="modalBody">
                     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-                        {groupJoinReqList.length > 0
+                        {groupMembersList.length > 0
                             ?
-                            groupJoinReqList.map((item, index) => (
+                            groupMembersList.map((item, index) => (
+                                // console.log(item)
                                 <Div key={index}>
                                     <ListItem style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
                                             <Avatar alt={item.userName} src={item.userPhoto} />
                                             <Div>
                                                 <h3>{item.userName}</h3>
-                                                "Wants to Join Your Group"
+                                                "Group Member"
                                             </Div>
                                         </div>
                                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px" }}>
-                                            <Button onClick={() => handleAcceptJoinRequest(item)} style={{ fontSize: "20px", padding: "5px 5px", minWidth: "initial" }} variant="outlined" color="success"><BsPatchCheckFill /></Button>
-                                            <Button onClick={() => handleRejectJoinRequest(item)} style={{ fontSize: "20px", padding: "5px 5px", minWidth: "initial" }} variant="outlined" color="error"><AiFillDelete /></Button>
+                                            <Button style={{ fontSize: "20px", padding: "5px 5px", minWidth: "initial" }} variant="outlined" color="success"><BsPatchCheckFill /></Button>
+                                            <Button style={{ fontSize: "20px", padding: "5px 5px", minWidth: "initial" }} variant="outlined" color="error"><AiFillDelete /></Button>
                                         </div>
                                     </ListItem>
                                     <Divider component="li" />
                                 </Div>
                             ))
                             :
-                            <h3 style={{ color: "#222" }}>No Group Request Available</h3>
+                            <h3 style={{ color: "#222" }}>No Group Members Available</h3>
                         }
                     </List>
                 </Div>
                 <Div className="modalFooter">
-                    <CButton onClick={handleGroupReqModalClose} buttonType={cancle}>Cancle</CButton>
+                    <CButton onClick={handleGroupMembersModalClose} buttonType={cancle}>Cancle</CButton>
                 </Div>
             </Box>
         </Modal>
     )
 }
 
-export default GroupJoinRequest
+export default GroupMembers

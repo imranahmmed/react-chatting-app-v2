@@ -17,8 +17,6 @@ const FriendCard = ({ data, activeUser }) => {
 
     return (
         <Div className="user" onClick={() => dispatch(activeChatUser({ ...data, status: "singleMsg" }))}>
-
-
             <Div className="userInfo">
                 <Div className="userImg">
                     {activeUser === senderId ?

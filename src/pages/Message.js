@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import MyGroups from '../components/MyGroups';
 import Friends from '../components/Friends';
 import ChatBox from '../components/ChatBox';
+import NewMassages from '../components/NewMassages';
 const Message = () => {
     const auth = getAuth();
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Message = () => {
             </Grid>
 
             <Grid item xs={7}>
-                <ChatBox/>
+                <ChatBox />
             </Grid>
         </>
     )

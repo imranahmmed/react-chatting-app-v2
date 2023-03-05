@@ -17,8 +17,12 @@ const Home = () => {
     let [cancleFriendReq, setCancleFriendReq] = useState([]);
     let [blockedList, setBlockedList] = useState([]);
     let [userListShowblocked, setUserListShowblocked] = useState([]);
+
+    let [groupMembers, setGroupMembers] = useState([]);
     let [groupList, setGroupList] = useState([]);
     let [myGroupList, setMyGroupList] = useState([]);
+    let [showGroupReqPending, setShowGroupReqPending] = useState([]);
+    let [showJoined, setShowJoined] = useState([]);
 
     useEffect(() => {
         const peoples = ref(db, 'users/');
@@ -121,23 +125,48 @@ const Home = () => {
         });
     }, [db]);
 
+
+    useEffect(() => {
+        const groupRequests = ref(db, 'groupJoinRequest');
+        onValue(groupRequests, (snapshot) => {
+            let groupPendingArr = [];
+            snapshot.forEach((item) => {
+                groupPendingArr.push(item.val().groupId + item.val().userId)
+            })
+            setShowGroupReqPending(groupPendingArr);
+        });
+    }, [db]);
+
+    useEffect(() => {
+        const groupMembers = ref(db, 'groupMembers');
+        onValue(groupMembers, (snapshot) => {
+            let arr = [];
+            snapshot.forEach((item) => {
+                arr.push(item.val().groupId + item.val().userId)
+            });
+            setShowJoined(arr)
+            setGroupMembers(arr)
+        })
+    }, [db]);
+
+
     useEffect(() => {
         const myGroups = ref(db, 'groups');
         onValue(myGroups, (snapshot) => {
             let myGroupssArr = [];
             snapshot.forEach((item) => {
-                if (loggedInUser === item.val().adminId) {
+                if (loggedInUser === item.val().adminId || groupMembers.includes(item.key + loggedInUser)) {
                     myGroupssArr.push({ ...item.val(), groupId: item.key })
                 }
             });
             setMyGroupList(myGroupssArr);
         });
-    }, [db]);
+    }, [groupMembers.length]);
 
     return (
         <>
             <Grid className='py-10' item xs={4}>
-                <UserList activeUser={data} pendingReq={pendingReq} groupList={groupList} title="Groups List" groupsFlag={true} />
+                <UserList activeUser={data} pendingReq={pendingReq} groupList={groupList} title="Groups List" groupsFlag={true} showGroupReqPending={showGroupReqPending} showJoined={showJoined}/>
                 <UserList friendReqData={friendReq} activeUser={data} title="Friend  Request" groupsFlag={false} />
             </Grid>
             <Grid item xs={3}>

@@ -3,7 +3,7 @@ import Div from './Div';
 import Img from './Img';
 import CustomDropdown from './CustomDropdown';
 
-const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked, groupData, myGroupData, handleGroupJoin, handleGroupReqModalOpen }) => {
+const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, userData, handleFriendReq, handleFriendReqCancle, handleBlockFriend, handleUnfriend, handleUnblockFriend, friendReqData, friendsData, pendingReq, friends, blockedData, activeUser, handleFriendReqReject, handleFriendReqAccept, userListShowblocked, groupData, myGroupData, handleGroupJoin, handleGroupReqModalOpen, handleGroupMembersModalOpen, showGroupReqPending, showJoined }) => {
     let loggedInUser = activeUser.authData.userInfo.uid;
     let { username, photoURL, email, id } = userData;
     let { senderName, senderEmail, senderPhotoURL, senderId, receiverName, receiverEmail, receiverPhotoURL, receiverId } = friendReqData;
@@ -149,14 +149,25 @@ const UserCard = ({ groupsFlag, friendsFlag, myGroups, peopleFlag, blockedFlag, 
                                 ?
                                 <CustomDropdown>
                                     <ul>
-                                        <li onClick={()=>handleGroupReqModalOpen(groupId)}>Member Request</li>
-                                        <li>Group Members</li>
+                                        <li onClick={() => handleGroupReqModalOpen(groupId, adminId)}>Member Request</li>
+                                        <li onClick={() => handleGroupMembersModalOpen(groupId)}>Group Members</li>
                                     </ul>
                                 </CustomDropdown>
                                 // <BsThreeDotsVertical/>
                                 :
                                 loggedInUser !== adminId &&
-                                <button className='btn' onClick={() => handleGroupJoin(groupData)}>Join</button>
+                                    showJoined.includes(groupId + loggedInUser) || showJoined.includes(loggedInUser + groupId)
+                                    ?
+                                    <button className='friendsBtn'>Joined</button>
+                                    :
+                                    showGroupReqPending.includes(groupId + loggedInUser) || showGroupReqPending.includes(loggedInUser + groupId)
+                                        ?
+                                        <>
+                                            <button className='btn ml-5'>Pending</button>
+                                            {/* <button className='btn ml-5'>Cancle</button> */}
+                                        </>
+                                        :
+                                        <button className='btn' onClick={() => handleGroupJoin(groupData)}>Join</button>
                             }
                         </>
                         :
