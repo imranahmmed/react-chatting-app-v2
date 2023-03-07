@@ -4,15 +4,14 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Div from './Div'
 import FriendCard from './FriendCard';
-import Img from './Img';
 
 const Friends = () => {
     const db = getDatabase();
     const data = useSelector((state) => state);
     const loggedInUser = data.authData.userInfo.uid;
 
+    const [friendList, setFriendList] = useState([]);
 
-    let [friendList, setFriendList] = useState([]);
     useEffect(() => {
         const friendList = ref(db, 'friends');
         onValue(friendList, (snapshot) => {

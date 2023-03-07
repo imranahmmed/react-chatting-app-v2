@@ -20,6 +20,7 @@ import SimpleDialogDemo from './SimpleDialogDemo';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Img from './Img';
+import CustomDropdown from './CustomDropdown';
 
 
 const ChatBox = () => {
@@ -41,6 +42,7 @@ const ChatBox = () => {
     const [dialogOpen, setDialogOpen] = useState(false);
     const [backDropOpen, setBackDropOpen] = useState(false);
 
+    console.log(activeChatUserInfo)
     moment.updateLocale('en', { // override relative time thresholds for "en-gb"
         relativeTime: {
             future: 'in %s',
@@ -132,9 +134,6 @@ const ChatBox = () => {
             setImgMsg("");
             console.log("Massege Sent")
         })
-
-
-
     }
 
 
@@ -157,35 +156,65 @@ const ChatBox = () => {
                 ?
                 <>
                     <Div className="chatBox">
-                        <Div className="boxHeading">
-                            <Div className="chatInfo">
-                                <Div className="chatImg">
-                                    {activeChatUserInfo && loggedinUser === activeChatSenderId
-                                        ?
-                                        <Avatar className="chatImg" alt={activeChatUserInfo.receiverName} src={activeChatUserInfo.receiverPhotoURL} />
-                                        :
-                                        <Avatar className="chatImg" alt={activeChatUserInfo.senderName} src={activeChatUserInfo.senderPhotoURL} />
-                                    }
-                                    {/* <Avatar className="chatImg" alt={activeChatUserInfo.senderName} src="/static/images/avatar/1.jpg" /> */}
-                                </Div>
-                                <Div className="chatName">
-                                    {activeChatUserInfo && loggedinUser === activeChatSenderId
-                                        ?
-                                        <h3>{activeChatUserInfo.receiverName}</h3>
-                                        :
-                                        <h3>{activeChatUserInfo.senderName}</h3>
-                                    }
+                        {data.activeChatData.activeChatUserInfo && activeChatUserInfo.status == "singleMsg"
+                            ?
+                            <Div className="boxHeading">
+                                <Div className="chatInfo">
+                                    <Div className="chatImg">
+                                        {activeChatUserInfo && loggedinUser === activeChatSenderId
+                                            ?
+                                            <Avatar className="chatImg" alt={activeChatUserInfo.receiverName} src={activeChatUserInfo.receiverPhotoURL} />
+                                            :
+                                            <Avatar className="chatImg" alt={activeChatUserInfo.senderName} src={activeChatUserInfo.senderPhotoURL} />
+                                        }
+                                        {/* <Avatar className="chatImg" alt={activeChatUserInfo.senderName} src="/static/images/avatar/1.jpg" /> */}
+                                    </Div>
+                                    <Div className="chatName">
+                                        {activeChatUserInfo && loggedinUser === activeChatSenderId
+                                            ?
+                                            <h3>{activeChatUserInfo.receiverName}</h3>
+                                            :
+                                            <h3>{activeChatUserInfo.senderName}</h3>
+                                        }
 
-                                    {onlineUsers && onlineUsers.includes(activeChatUserInfo && loggedinUser === activeChatSenderId ? activeChatUserInfo.receiverId : activeChatUserInfo.senderId)
-                                        ?
-                                        <span>Online</span>
-                                        :
-                                        <span>Offline</span>
-                                    }
+                                        {onlineUsers && onlineUsers.includes(activeChatUserInfo && loggedinUser === activeChatSenderId ? activeChatUserInfo.receiverId : activeChatUserInfo.senderId)
+                                            ?
+                                            <span>Online</span>
+                                            :
+                                            <span>Offline</span>
+                                        }
+                                    </Div>
+                                </Div>
+                                <Div>
+                                    <CustomDropdown></CustomDropdown>
                                 </Div>
                             </Div>
-                            <Div><BsThreeDotsVertical /></Div>
-                        </Div>
+                            :
+                            <Div className="boxHeading">
+                                <Div className="chatInfo">
+                                    <Div className="chatImg">
+                                        <Avatar className="chatImg" alt={activeChatUserInfo.groupName} src={activeChatUserInfo.groupPhoto} />
+                                    </Div>
+                                    <Div className="chatName">
+                                        <h3>{activeChatUserInfo.groupName}</h3>
+                                        <span>{activeChatUserInfo.groupTag}</span>
+                                    </Div>
+                                </Div>
+                                <Div>
+                                    <CustomDropdown></CustomDropdown>
+                                </Div>
+                            </Div>
+                        }
+
+
+
+
+
+
+
+
+
+
                         <ScrollToBottom className="chatBody" style={{ marginBottom: "50px" }}>
                             {msgList.length > 0
                                 ?

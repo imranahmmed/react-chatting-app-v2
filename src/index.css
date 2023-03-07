@@ -431,6 +431,7 @@ fieldset legend {
   border-bottom: 1px solid #ffffff29;
   padding-top: 10px;
   padding-bottom: 10px;
+  cursor: pointer;
 }
 
 .user:last-child {
@@ -442,6 +443,7 @@ fieldset legend {
   display: flex;
   align-items: center;
   gap: 20px;
+  width: 100%;
 }
 
 .userImg {

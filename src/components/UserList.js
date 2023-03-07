@@ -170,6 +170,7 @@ const UserList = ({ title, groupsFlag, friendsFlag, myGroups, peopleFlag, blocke
 
     let uid = activeUser;
     let [modalOpen, setModalOpen] = useState(false);
+    
     let [groupJoinReqModalOpen, setGroupJoinReqModalOpen] = useState(false);
     let [groupMembersModalOpen, setGroupMembersModalOpen] = useState(false);
     let [groupJoinReqList, setGroupJoinReqList] = useState([]);

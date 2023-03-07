@@ -161,12 +161,12 @@ const Home = () => {
             });
             setMyGroupList(myGroupssArr);
         });
-    }, [groupMembers.length]);
+    }, [groupMembers]);
 
     return (
         <>
             <Grid className='py-10' item xs={4}>
-                <UserList activeUser={data} pendingReq={pendingReq} groupList={groupList} title="Groups List" groupsFlag={true} showGroupReqPending={showGroupReqPending} showJoined={showJoined}/>
+                <UserList activeUser={data} pendingReq={pendingReq} groupList={groupList} title="Groups List" groupsFlag={true} showGroupReqPending={showGroupReqPending} showJoined={showJoined} />
                 <UserList friendReqData={friendReq} activeUser={data} title="Friend  Request" groupsFlag={false} />
             </Grid>
             <Grid item xs={3}>
